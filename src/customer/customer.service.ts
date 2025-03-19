@@ -16,6 +16,24 @@ export class CustomerService {
     return this.customerRepository.save(customer);
   }
 
+  async findByEmail(email: string): Promise<Customer | null> {
+    return this.customerRepository.findOne({ where: { emailId: email } });
+  }
+
+  async createOrUpdate(createCustomerDto: CreateCustomerDto): Promise<Customer> {
+    const existingCustomer = await this.findByEmail(createCustomerDto.emailId);
+
+    if (existingCustomer) {
+      // Update existing customer with new information
+      this.customerRepository.merge(existingCustomer, createCustomerDto);
+      return this.customerRepository.save(existingCustomer);
+    }
+
+    // Create new customer if doesn't exist
+    const customer = this.customerRepository.create(createCustomerDto);
+    return this.customerRepository.save(customer);
+  }
+  
   async findOne(id: string): Promise<Customer> {
     return this.customerRepository.findOne({ where: { id } });
   }

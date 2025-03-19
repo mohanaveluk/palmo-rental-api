@@ -25,6 +25,18 @@ let CustomerService = class CustomerService {
         const customer = this.customerRepository.create(createCustomerDto);
         return this.customerRepository.save(customer);
     }
+    async findByEmail(email) {
+        return this.customerRepository.findOne({ where: { emailId: email } });
+    }
+    async createOrUpdate(createCustomerDto) {
+        const existingCustomer = await this.findByEmail(createCustomerDto.emailId);
+        if (existingCustomer) {
+            this.customerRepository.merge(existingCustomer, createCustomerDto);
+            return this.customerRepository.save(existingCustomer);
+        }
+        const customer = this.customerRepository.create(createCustomerDto);
+        return this.customerRepository.save(customer);
+    }
     async findOne(id) {
         return this.customerRepository.findOne({ where: { id } });
     }

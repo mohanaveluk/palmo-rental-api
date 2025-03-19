@@ -15,6 +15,7 @@ const product_module_1 = require("./product/product.module");
 const log_module_1 = require("./log/log.module");
 const customer_module_1 = require("./customer/customer.module");
 const database_config_1 = require("./config/database.config");
+const email_module_1 = require("./common/email/email.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,6 +37,7 @@ exports.AppModule = AppModule = __decorate([
             product_module_1.ProductModule,
             log_module_1.LogModule,
             customer_module_1.CustomerModule,
+            email_module_1.EmailModule
         ],
     })
 ], AppModule);

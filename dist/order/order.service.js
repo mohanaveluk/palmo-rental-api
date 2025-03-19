@@ -20,15 +20,18 @@ const order_entity_1 = require("./entities/order.entity");
 const order_detail_entity_1 = require("./entities/order-detail.entity");
 const product_service_1 = require("../product/product.service");
 const customer_service_1 = require("../customer/customer.service");
+const email_service_1 = require("../common/email/email.service");
+const order_confirmation_template_1 = require("../common/email/templates/order-confirmation.template");
 let OrderService = class OrderService {
-    constructor(orderRepository, orderDetailRepository, productService, customerService) {
+    constructor(orderRepository, orderDetailRepository, productService, customerService, emailService) {
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
         this.productService = productService;
         this.customerService = customerService;
+        this.emailService = emailService;
     }
     async create(createOrderDto) {
-        const customer = await this.customerService.create(createOrderDto.customer);
+        const customer = await this.customerService.createOrUpdate(createOrderDto.customer);
         let totalAmount = 0;
         const orderDetails = [];
         for (const detail of createOrderDto.orderDetails) {
@@ -52,7 +55,19 @@ let OrderService = class OrderService {
             orderDetails: orderDetails
         });
         const savedOrder = await this.orderRepository.save(order);
-        return this.mapToResponseDto(savedOrder, customer);
+        var orderDetail = this.mapToResponseDto(savedOrder, customer);
+        var template = (0, order_confirmation_template_1.generateOrderConfirmationTemplate)(orderDetail);
+        await this.emailService.sendEmail({
+            to: customer.emailId,
+            subject: `Palmo - Order Confirmation: ${order.rentalStartDate}`,
+            html: (0, order_confirmation_template_1.generateOrderConfirmationTemplate)(orderDetail)
+        });
+        await this.emailService.sendEmail({
+            to: process.env.ADMIN_EMAIL,
+            subject: `Order Confirmation: ${order.id}`,
+            html: (0, order_confirmation_template_1.generateOrderConfirmationTemplate)(orderDetail),
+        });
+        return orderDetail;
     }
     async findAll() {
         const orders = await this.orderRepository.find({
@@ -102,6 +117,7 @@ exports.OrderService = OrderService = __decorate([
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
         product_service_1.ProductService,
-        customer_service_1.CustomerService])
+        customer_service_1.CustomerService,
+        email_service_1.EmailService])
 ], OrderService);
 //# sourceMappingURL=order.service.js.map

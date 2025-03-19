@@ -7,6 +7,8 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderResponseDto } from './dto/order-response.dto';
 import { ProductService } from '../product/product.service';
 import { CustomerService } from '../customer/customer.service';
+import { EmailService } from 'src/common/email/email.service';
+import { generateOrderConfirmationTemplate } from 'src/common/email/templates/order-confirmation.template';
 
 @Injectable()
 export class OrderService {
@@ -17,11 +19,12 @@ export class OrderService {
     private orderDetailRepository: Repository<OrderDetail>,
     private productService: ProductService,
     private customerService: CustomerService,
+    private emailService: EmailService,
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<OrderResponseDto> {
     // Create customer first
-    const customer = await this.customerService.create(createOrderDto.customer);
+    const customer = await this.customerService.createOrUpdate(createOrderDto.customer);
 
     let totalAmount = 0;
     const orderDetails = [];
@@ -52,7 +55,25 @@ export class OrderService {
     });
 
     const savedOrder = await this.orderRepository.save(order);
-    return this.mapToResponseDto(savedOrder, customer);
+    var orderDetail = this.mapToResponseDto(savedOrder, customer);
+
+    //Send order confirmation email
+    var template = generateOrderConfirmationTemplate(orderDetail);
+
+    await this.emailService.sendEmail({
+      to: customer.emailId,
+      subject: `Palmo - Order Confirmation: ${order.rentalStartDate}`,
+      html: generateOrderConfirmationTemplate(orderDetail)
+    }); 
+
+    await this.emailService.sendEmail({
+      to: process.env.ADMIN_EMAIL,
+      subject: `Order Confirmation: ${order.id}`,
+      html: generateOrderConfirmationTemplate(orderDetail),
+    }); 
+
+
+    return orderDetail;
   }
 
   async findAll(): Promise<OrderResponseDto[]> {
