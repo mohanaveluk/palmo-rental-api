@@ -19,7 +19,7 @@ export class OrderService {
     private orderDetailRepository: Repository<OrderDetail>,
     private productService: ProductService,
     private customerService: CustomerService,
-    //private emailService: EmailService,
+    private emailService: EmailService,
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<OrderResponseDto> {
@@ -60,7 +60,7 @@ export class OrderService {
     //Send order confirmation email
     //var template = generateOrderConfirmationTemplate(orderDetail);
 
-    /*await this.emailService.sendEmail({
+    await this.emailService.sendEmail({
       to: customer.emailId,
       subject: `Palmo - Order Confirmation: ${order.rentalStartDate}`,
       html: generateOrderConfirmationTemplate(orderDetail)
@@ -70,7 +70,7 @@ export class OrderService {
       to: process.env.ADMIN_EMAIL,
       subject: `Order Confirmation: ${order.id}`,
       html: generateOrderConfirmationTemplate(orderDetail),
-    }); */
+    }); 
 
     return orderDetail;
   }
