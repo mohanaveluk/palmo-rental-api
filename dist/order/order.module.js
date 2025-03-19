@@ -15,7 +15,7 @@ const order_entity_1 = require("./entities/order.entity");
 const order_detail_entity_1 = require("./entities/order-detail.entity");
 const product_module_1 = require("../product/product.module");
 const customer_module_1 = require("../customer/customer.module");
-const email_service_1 = require("../common/email/email.service");
+const email_module_1 = require("../common/email/email.module");
 let OrderModule = class OrderModule {
 };
 exports.OrderModule = OrderModule;
@@ -25,9 +25,10 @@ exports.OrderModule = OrderModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([order_entity_1.Order, order_detail_entity_1.OrderDetail]),
             product_module_1.ProductModule,
             customer_module_1.CustomerModule,
+            email_module_1.EmailModule
         ],
         controllers: [order_controller_1.OrderController],
-        providers: [order_service_1.OrderService, email_service_1.EmailService],
+        providers: [order_service_1.OrderService],
         exports: [order_service_1.OrderService],
     })
 ], OrderModule);

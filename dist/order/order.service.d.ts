@@ -5,7 +5,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderResponseDto } from './dto/order-response.dto';
 import { ProductService } from '../product/product.service';
 import { CustomerService } from '../customer/customer.service';
-import { EmailService } from 'src/common/email/email.service';
+import { EmailService } from '../common/email/email.service';
 export declare class OrderService {
     private orderRepository;
     private orderDetailRepository;
