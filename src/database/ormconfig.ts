@@ -7,7 +7,7 @@ const ormConfig: TypeOrmModuleOptions   = {
     port: parseInt(process.env.DB_PORT) || 3306,
     username: process.env.DB_USERNAME || 'root',
     password: process.env.DB_PASSWORD || 'root',
-    database: process.env.DB_DATABASE || 'rental_db',
+    database: process.env.DB_DATABASE || 'palmo_rental',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: false,
     logging: false,

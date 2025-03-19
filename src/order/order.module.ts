@@ -6,7 +6,7 @@ import { Order } from './entities/order.entity';
 import { OrderDetail } from './entities/order-detail.entity';
 import { ProductModule } from '../product/product.module';
 import { CustomerModule } from '../customer/customer.module';
-import { EmailService } from 'src/common/email/email.service';
+import { EmailService } from '../common/email/email.service';
 
 @Module({
   imports: [

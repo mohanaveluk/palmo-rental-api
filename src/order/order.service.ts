@@ -7,8 +7,8 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderResponseDto } from './dto/order-response.dto';
 import { ProductService } from '../product/product.service';
 import { CustomerService } from '../customer/customer.service';
-import { EmailService } from 'src/common/email/email.service';
-import { generateOrderConfirmationTemplate } from 'src/common/email/templates/order-confirmation.template';
+import { EmailService } from '../common/email/email.service';
+import { generateOrderConfirmationTemplate } from '../common/email/templates/order-confirmation.template';
 
 @Injectable()
 export class OrderService {

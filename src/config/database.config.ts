@@ -10,4 +10,6 @@ export default registerAs('database', () => ({
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: process.env.NODE_ENV !== 'production',
   logging: process.env.NODE_ENV !== 'production',
+  migrationsRun: true,
+  migrations: [__dirname + '/database/migrations/**/*.{ts,js}'],
 }));
