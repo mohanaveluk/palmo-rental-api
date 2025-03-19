@@ -16,6 +16,7 @@ const order_detail_entity_1 = require("./entities/order-detail.entity");
 const product_module_1 = require("../product/product.module");
 const customer_module_1 = require("../customer/customer.module");
 const email_module_1 = require("../common/email/email.module");
+const email_service_1 = require("../common/email/email.service");
 let OrderModule = class OrderModule {
 };
 exports.OrderModule = OrderModule;
@@ -28,7 +29,7 @@ exports.OrderModule = OrderModule = __decorate([
             email_module_1.EmailModule
         ],
         controllers: [order_controller_1.OrderController],
-        providers: [order_service_1.OrderService],
+        providers: [order_service_1.OrderService, email_service_1.EmailService],
         exports: [order_service_1.OrderService],
     })
 ], OrderModule);
