@@ -8,7 +8,7 @@ export default registerAs('database', () => ({
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_DATABASE || 'palmo_rental',
   entities: ['dist/**/*.entity{.ts,.js}'],
-  synchronize: process.env.NODE_ENV !== 'production',
+  synchronize: true, // process.env.NODE_ENV !== 'production',
   logging: process.env.NODE_ENV !== 'production',
   migrationsRun: true,
   migrations: [__dirname + '/database/migrations/**/*.{ts,js}'],
