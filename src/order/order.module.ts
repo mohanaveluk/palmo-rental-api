@@ -6,7 +6,8 @@ import { Order } from './entities/order.entity';
 import { OrderDetail } from './entities/order-detail.entity';
 import { ProductModule } from '../product/product.module';
 import { CustomerModule } from '../customer/customer.module';
-import { EmailModule } from 'src/common/email/email.module';
+import { EmailModule } from '../common/email/email.module';
+import { EmailService } from '../common/email/email.service';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { EmailModule } from 'src/common/email/email.module';
     EmailModule
   ],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [OrderService, EmailService],
   exports: [OrderService],
 })
 export class OrderModule {}
